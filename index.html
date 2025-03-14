@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Church App - Login</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Same firebaseConfig as your dashboard
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVaBz_3sVQH-pXkk8KXf-NY2aTmx2aSOw",
+      authDomain: "churchapp-9129f.firebaseapp.com",
+      projectId: "churchapp-9129f",
+      storageBucket: "churchapp-9129f.firebasestorage.app",
+      messagingSenderId: "187242836197",
+      appId: "1:187242836197:web:a9f20def98252a513c240c",
+      measurementId: "G-6C2FP23JTR"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
   <div id="login-container">
@@ -19,9 +34,26 @@
     <p id="error-message"></p>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-  <script src="scripts.js"></script>
+  <script>
+    const auth = firebase.auth();
+
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log("Login successful:", userCredential.user);
+          // Redirect to the dashboard
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          console.error("Error during sign in:", error);
+          document.getElementById('error-message').textContent = error.message;
+        });
+    });
+  </script>
 </body>
 </html>

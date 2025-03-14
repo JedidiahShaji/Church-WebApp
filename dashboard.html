@@ -4,10 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MPC Church Dashboard</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVaBz_3sVQH-pXkk8KXf-NY2aTmx2aSOw",
+      authDomain: "churchapp-9129f.firebaseapp.com",
+      projectId: "churchapp-9129f",
+      storageBucket: "churchapp-9129f.firebasestorage.app",
+      messagingSenderId: "187242836197",
+      appId: "1:187242836197:web:a9f20def98252a513c240c",
+      measurementId: "G-6C2FP23JTR"
+    };
+  
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+  </script>
   <!-- Link your CSS file that contains the .dashboard-container code -->
   <link rel="stylesheet" href="dashboard.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
-
 </head>
 <body>
   <!-- Container holds sidebar + content side by side -->
@@ -34,10 +54,29 @@
     <!-- Main Content -->
     <main class="content">
       <!-- Each section can be toggled by JavaScript -->
+
+      <!-- Announcements section -->
       <section id="announcements" class="section">
         <h2>Announcements</h2>
-        <p>This is the Announcements section.</p>
+      
+        <!-- Form for creating new announcements (visible only for admins) -->
+        <div id="announcement-form-container">
+          <h3>Add New Announcement</h3>
+          <form id="announcement-form">
+            <label for="announcement-title">Title:</label>
+            <input type="text" id="announcement-title" placeholder="Title" required>
+      
+            <label for="announcement-message">Message:</label>
+            <textarea id="announcement-message" placeholder="Message" required></textarea>
+      
+            <button type="submit">Publish</button>
+          </form>
+        </div>
+      
+        <!-- Container where announcements will be displayed -->
+        <div id="announcement-list"></div>
       </section>
+      
 
       <section id="sunday-service" class="section" style="display:none;">
         <h2>Sunday Service</h2>

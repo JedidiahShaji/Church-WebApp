@@ -72,4 +72,75 @@
     border-radius: 5px;
     margin-bottom: 20px;
   }
-  
+
+  /* Announcements Section */
+#announcements {
+  margin-bottom: 30px;
+}
+
+#announcement-form-container {
+  background: #fafafa;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+#announcement-form-container label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#announcement-form-container input[type="text"],
+#announcement-form-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+#announcement-form-container button {
+  margin-top: 10px;
+  padding: 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#announcement-list {
+  margin-top: 20px;
+}
+
+.announcement-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.announcement-item h4 {
+  margin-bottom: 5px;
+}
+
+.announcement-item small {
+  display: block;
+  margin-top: 5px;
+  color: #999;
+}
+
+.announcement-item button {
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: none;
+  background: #333;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.announcement-item button:hover {
+  background: #555;
+}
