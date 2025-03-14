@@ -1,0 +1,156 @@
+/* Basic Reset & Typography */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+display: flex;
+min-height: 100vh;
+}
+
+.sidebar {
+width: 250px;
+background: #333;
+color: #fff;
+padding: 20px;
+}
+
+.sidebar .logo-container {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.sidebar .logo {
+max-width: 100px;
+width: 100%;
+height: auto;
+}
+
+.sidebar nav ul {
+list-style: none;
+padding: 0;
+}
+
+.sidebar nav ul li {
+padding: 10px;
+margin-bottom: 5px;
+background: #444;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.sidebar nav ul li:hover {
+background: #555;
+}
+
+.content {
+flex: 1;
+padding: 20px;
+background: #f4f4f4;
+}
+
+.section {
+background: #fff;
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 5px;
+}
+
+
+/* Header */
+header {
+  background: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header .logo {
+  width: 100px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+/* Main Content */
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+section {
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+h1, h2 {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #333;
+  color: #fff;
+}
+
+/* For the MPC logo display */
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 150px;
+  width: 100%;
+  height: auto;
+}
+
+/* Login Container Styles */
+#login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+#login-container h2 {
+  margin-bottom: 20px;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#login-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#login-form button {
+  padding: 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#login-form button:hover {
+  background: #555;
+}
+
+#error-message {
+  color: red;
+  margin-top: 10px;
+}
