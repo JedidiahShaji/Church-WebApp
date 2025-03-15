@@ -117,30 +117,34 @@ function editAnnouncement(id, announcement) {
   }
 }
 
-// ------------------------------
-// Authentication and Role Fetching
-// ------------------------------
 auth.onAuthStateChanged(user => {
   if (!user) {
     // Not logged in, redirect to login page
     window.location.href = "index.html";
   } else {
+    // User is logged in
     currentUser = user;
-    // Fetch the user's role from Firestore (from "users" collection)
+    console.log("Current user UID:", currentUser.uid);
+    
+    // Fetch the user's data (name and role) from Firestore
     db.collection('users').doc(user.uid).get().then(doc => {
       if (doc.exists) {
-        userRole = doc.data().role; // e.g., "pastor" or "secretary"
+        const userData = doc.data();
+        userRole = userData.role; // e.g., "pastor" or "admin"
+        const userName = userData.name || user.email; // fallback to email if no name
+        document.getElementById('current-user').textContent = `Welcome, ${userName}`;
       } else {
         userRole = 'member';
+        document.getElementById('current-user').textContent = `Welcome, ${user.email}`;
       }
       
-      // Hide announcement form if the user is not an admin.
+      // Hide announcement form if the user is not an admin (pastor or admin)
       if (userRole !== 'pastor' && userRole !== 'admin') {
         const formContainer = document.getElementById('announcement-form-container');
         if (formContainer) formContainer.style.display = 'none';
       }
       
-      // Load announcements after role is determined.
+      // Load announcements after role is determined
       loadAnnouncements();
       console.log("User role:", userRole);
     }).catch(error => {
@@ -152,3 +156,20 @@ auth.onAuthStateChanged(user => {
     });
   }
 });
+
+
+
+// Function: SigOut button function
+const signOutBtn = document.getElementById('sign-out-btn');
+if (signOutBtn) {
+  signOutBtn.addEventListener('click', () => {
+    firebase.auth().signOut()
+      .then(() => {
+        console.log("User signed out.");
+        window.location.href = "index.html"; // or any page you want
+      })
+      .catch((error) => {
+        console.error("Error signing out: ", error);
+      });
+  });
+}
