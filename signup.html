@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Church App - Sign Up</title>
+  <!-- Firebase Compat Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // Replace with your actual Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVaBz_3sVQH-pXkk8KXf-NY2aTmx2aSOw",
+        authDomain: "churchapp-9129f.firebaseapp.com",
+        projectId: "churchapp-9129f",
+        storageBucket: "churchapp-9129f.firebasestorage.app",
+        messagingSenderId: "187242836197",
+        appId: "1:187242836197:web:a9f20def98252a513c240c",
+        measurementId: "G-6C2FP23JTR"
+      };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="signup-container">
+    <h2>Church App - Sign Up</h2>
+    <form id="signup-form">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+      <input type="text" id="invite-code" placeholder="Invitation Code" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p id="signup-error-message" style="color:red;"></p>
+  </div>
+  <script src="signup.js"></script>
+</body>
+</html>
