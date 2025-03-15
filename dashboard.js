@@ -142,6 +142,146 @@ function editAnnouncement(id, announcement) {
 }
 
 // ------------------------------
+// YOUTH MEETING SECTION
+// ------------------------------
+// ------------------------------------------------
+// ------------------------------
+// ------------------------------
+// Youth Programme Items Section
+// ------------------------------
+
+let youthProgrammeMode = "upcoming"; // default mode
+
+// Function: Load Youth Programme Items based on toggle mode
+function loadYouthProgrammeItems() {
+  const now = new Date();
+  let query;
+  
+  if (youthProgrammeMode === "upcoming") {
+    // For upcoming meetings: meetingDate >= now, order ascending
+    query = db.collection('youthProgrammeItems')
+              .where('meetingDate', '>=', firebase.firestore.Timestamp.fromDate(now))
+              .orderBy('meetingDate', 'asc')
+              .limit(10);
+  } else {
+    // For previous meetings: meetingDate <= now, order descending
+    query = db.collection('youthProgrammeItems')
+              .where('meetingDate', '<=', firebase.firestore.Timestamp.fromDate(now))
+              .orderBy('meetingDate', 'desc')
+              .limit(10);
+  }
+  
+  query.onSnapshot(snapshot => {
+    const listContainer = document.getElementById('youth-program-list');
+    if (listContainer) {
+      listContainer.innerHTML = ''; // Clear current list
+      
+      snapshot.forEach(doc => {
+        const item = doc.data();
+        const docId = doc.id;
+        const container = document.createElement('div');
+        container.classList.add('youth-program-item');
+        container.innerHTML = `
+          <h4>${item.category}</h4>
+          <p>Assignment: ${item.assignment}</p>
+          <small>Meeting Date: ${item.meetingDate ? new Date(item.meetingDate.toDate()).toLocaleDateString() : ''}</small>
+          <br>
+          <small>Posted by ${item.postedByName || 'Unknown'} (${item.postedByRole || 'unknown'})</small>
+        `;
+        
+        // If admin, add edit and delete buttons
+        if (userRole === 'pastor' || userRole === 'admin') {
+          const editBtn = document.createElement('button');
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => editProgrammeItem(docId, item));
+          
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.addEventListener('click', () => deleteProgrammeItem(docId));
+          
+          container.appendChild(editBtn);
+          container.appendChild(deleteBtn);
+        }
+        
+        listContainer.appendChild(container);
+      });
+    }
+  });
+}
+
+// Toggle event listeners for programme items
+const togglePreviousProgramme = document.getElementById('toggle-previous');
+const toggleUpcomingProgramme = document.getElementById('toggle-upcoming');
+
+if (togglePreviousProgramme && toggleUpcomingProgramme) {
+  togglePreviousProgramme.addEventListener('click', () => {
+    youthProgrammeMode = "previous";
+    togglePreviousProgramme.classList.add('active');
+    toggleUpcomingProgramme.classList.remove('active');
+    loadYouthProgrammeItems();
+  });
+  
+  toggleUpcomingProgramme.addEventListener('click', () => {
+    youthProgrammeMode = "upcoming";
+    toggleUpcomingProgramme.classList.add('active');
+    togglePreviousProgramme.classList.remove('active');
+    loadYouthProgrammeItems();
+  });
+}
+
+// Function: Create a new programme item.
+if (document.getElementById('youth-program-form')) {
+  document.getElementById('youth-program-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const category = document.getElementById('programme-category').value;
+    const assignment = document.getElementById('programme-assignment').value;
+    const dateValue = document.getElementById('programme-date').value;
+    const meetingDate = firebase.firestore.Timestamp.fromDate(new Date(dateValue));
+    
+    db.collection('youthProgrammeItems').add({
+      category: category,
+      assignment: assignment,
+      meetingDate: meetingDate,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: currentUser ? currentUser.uid : null,
+      postedByName: currentUserName,
+      postedByRole: userRole
+    })
+    .then(() => {
+      document.getElementById('youth-program-form').reset();
+      console.log("Programme item added successfully.");
+    })
+    .catch(error => {
+      console.error("Error adding programme item: ", error);
+    });
+  });
+}
+
+// Function: Delete a programme item.
+function deleteProgrammeItem(id) {
+  if (confirm("Are you sure you want to delete this programme item?")) {
+    db.collection('youthProgrammeItems').doc(id).delete()
+      .then(() => console.log("Programme item deleted."))
+      .catch(error => console.error("Error deleting programme item: ", error));
+  }
+}
+
+// Function: Edit a programme item using prompt inputs.
+function editProgrammeItem(id, item) {
+  const newCategory = prompt("Edit category:", item.category);
+  const newAssignment = prompt("Edit assignment:", item.assignment);
+  
+  if (newCategory !== null && newAssignment !== null) {
+    db.collection('youthProgrammeItems').doc(id).update({
+      category: newCategory,
+      assignment: newAssignment
+    })
+    .then(() => console.log("Programme item updated."))
+    .catch(error => console.error("Error updating programme item: ", error));
+  }
+}
+
+// ------------------------------
 // Authentication and Role Fetching
 // ------------------------------
 auth.onAuthStateChanged(user => {
@@ -166,21 +306,28 @@ auth.onAuthStateChanged(user => {
         document.getElementById('current-user').textContent = `Welcome, ${currentUserName}`;
       }
       
-      // Hide announcement form if the user is not an admin (pastor or admin)
+      // Hide forms if not admin
       if (userRole !== 'pastor' && userRole !== 'admin') {
-        const formContainer = document.getElementById('announcement-form-container');
-        if (formContainer) formContainer.style.display = 'none';
+        const annFormContainer = document.getElementById('announcement-form-container');
+        if (annFormContainer) annFormContainer.style.display = 'none';
+        const youthFormContainer = document.getElementById('youth-program-form-container');
+        if (youthFormContainer) youthFormContainer.style.display = 'none';
       }
       
-      // Load announcements after role is determined
+      
+      // Load data after role is determined
       loadAnnouncements();
+      loadYouthProgrammeItems(); // Add this call to load youth programme items
       console.log("User role:", userRole);
     }).catch(error => {
-      console.error("Error fetching user role: ", error);
+      console.error("Error fetching user role:", error);
       userRole = 'member';
-      const formContainer = document.getElementById('announcement-form-container');
-      if (formContainer) formContainer.style.display = 'none';
+      const annFormContainer = document.getElementById('announcement-form-container');
+      if (annFormContainer) annFormContainer.style.display = 'none';
+      const youthFormContainer = document.getElementById('youth-program-form-container');
+      if (youthFormContainer) youthFormContainer.style.display = 'none';
       loadAnnouncements();
+      loadYouthProgrammeItems(); // Also load here in case of error
     });
   }
 });

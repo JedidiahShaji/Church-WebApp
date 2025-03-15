@@ -88,10 +88,41 @@
         <p>All Sunday Service details go here.</p>
       </section>
 
+      <!-- Youth Programe section -->
+
       <section id="youth-program" class="section" style="display:none;">
-        <h2>Youth Program</h2>
-        <p>Information about youth events.</p>
+        <!-- Header Area for the Title -->
+        <div class="section-header">
+          <h2 class="section-title">Youth Programme</h2>
+        </div>
+        
+        <!-- Content Area for Toggle, List, and Form -->
+        <div class="section-content">
+          <!-- Toggle Buttons -->
+          <div id="toggle-container">
+            <button id="toggle-previous" class="toggle-btn">Previous Sunday</button>
+            <button id="toggle-upcoming" class="toggle-btn active">Upcoming Sunday</button>
+          </div>
+          
+          <!-- List of Programme Items -->
+          <div id="youth-program-list"></div>
+          
+          <!-- Admin-only Form to Add a New Programme Item -->
+          <div id="youth-program-form-container">
+            <h3>Add New Programme Item</h3>
+            <form id="youth-program-form">
+              <input type="text" id="programme-category" placeholder="Category (e.g., Prayer)" required>
+              <input type="text" id="programme-assignment" placeholder="Assignment (e.g., Song - Danny, Message - Master Noel)" required>
+              <input type="date" id="programme-date" required>
+              <button type="submit">Add Programme Item</button>
+            </form>
+          </div>
+        </div>
       </section>
+      
+      
+      
+      
 
       <section id="prayer-meetings" class="section" style="display:none;">
         <h2>Prayer Meetings</h2>
